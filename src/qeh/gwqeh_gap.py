@@ -27,6 +27,7 @@ mu_dict = {"MoS2": 0.24,
            "WSe2": 0.19}
 
 data_path = "/cluster/scratch/ttian/QEH"
+res_path = os.path.join(os.path.dirname(__file__), "../../results")
 # Get ground state wfs
 # def traj(mater):
     # return os.path.join(data_path, "{}/relax.traj".format(mater))
@@ -50,11 +51,12 @@ def bb_file(mater):
                                 eta=0.1,
                                 intraband=False,
                                 truncation="2D")
-        bb = BuildingBlock(mater, df, qmax=3.0)
+        bb = BuildingBlock(mater, df, qmax=3)
         bb.calculate_building_block()
         return f_name
 
 def gwqeh(mater, n_layers, band_num=3):
+    bb_file(mater)
     parprint("Calculate QP correction for {} with {} layers".format(mater, n_layers))
     assert mater in d_list.keys()
     assert n_layers >= 2
@@ -106,7 +108,7 @@ def get_gap(mater, n, band_num=3):
     # res = gw.get_gw_bands(interpolate=True, vac=True)  # No gwqeh file
     return gap
 
-def main(mater, n_max=10):
+def main(mater, n_max=20):
     # Delete all previous files
     if world.rank == 0:
         for f in glob.glob(os.path.join(data_path, "{}/gwqeh*".format(mater))):
@@ -121,7 +123,8 @@ def main(mater, n_max=10):
         gap = get_gap(mater, n)
         res.append((n, gap))
     res = numpy.array(res)
-    parprint(res)
+    f_name = os.path.join(res_path, "{}-gwqeh-gap.csv".format(mater))
+    numpy.savetxt(f_name, X=res, delimiter=",", header="N, Eg (eV)")
     return
 
 if __name__ == "__main__":
