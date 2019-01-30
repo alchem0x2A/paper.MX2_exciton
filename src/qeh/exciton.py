@@ -56,7 +56,7 @@ def main():
         for i in range(1, 20):
             print(mat, i)
             eb = get_eb(mat, i)
-            results.append((i, eb))
+            results.append((i, abs(eb)))
         results = numpy.array(results)
         f_name = os.path.join(res_path, "{}_eb.csv".format(mat))
         numpy.savetxt(f_name, X=results, delimiter=",", header="N, Eb(eV)")
