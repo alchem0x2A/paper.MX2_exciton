@@ -108,7 +108,7 @@ def get_gap(mater, n, band_num=3):
     # res = gw.get_gw_bands(interpolate=True, vac=True)  # No gwqeh file
     return gap
 
-def main(mater, n_max=20):
+def main(mater, n_max=16):
     # Delete all previous files
     if world.rank == 0:
         for f in glob.glob(os.path.join(data_path, "{}/gwqeh*".format(mater))):
