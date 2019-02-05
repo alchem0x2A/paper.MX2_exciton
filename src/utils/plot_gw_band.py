@@ -14,7 +14,8 @@ def g0w0_file(mater):
 def get_band(mater):
     K = numpy.array([1 / 3, 1 / 3, 0])
     G = numpy.array([0.0, 0.0, 0.0])
-    kpoints = numpy.array([G, K, G])
+    M = numpy.array([1 / 2, 0, 0])
+    kpoints = numpy.array([G, M, K, G])
     gw = GWBands(calc=es_wfs(mater),
                  gw_file=g0w0_file(mater),
                  kpoints=kpoints)
@@ -29,6 +30,7 @@ def plot_band(mater):
     plt.figure()
     plt.plot(xx, ekn)
     plt.show()
+    # plt.save("{}.png".format(mater))
 
 if __name__ == "__main__":
     import sys

@@ -18,8 +18,7 @@ def gs_wfs(mater):
 def es_wfs(mater):
     return os.path.join(data_path, "{}/es.gpw".format(mater))
 
-def calc_es(mater,
-            dens=5,             # make sure high symmetry points contain
+def calc_es(mater,            # make sure high symmetry points contain
             ecut=800,
             nbands=nbs,
             vacuum=12):
@@ -28,7 +27,7 @@ def calc_es(mater,
     mol.center()
     calc = GPAW(mode=PW(ecut=ecut),
                 xc="PBE",
-                kpts=dict(gamma=True, density=dens),
+                kpts=dict(gamma=True, size=(12, 12, 1)),
                 occupations=FermiDirac(0.01),
                 poissonsolver=dict(dipolelayer="xy"))
     calc.atoms = mol
@@ -38,7 +37,7 @@ def calc_es(mater,
     calc = GPAW(restart=gs_wfs(mater),
                 fixdensity=True,
                 nbands=nbands,
-                kpts=dict(gamma=True, density=dens),
+                kpts=dict(gamma=True, size=(12, 12, 1)),
                 convergence=dict(bands=-5),
                 parallel=dict(kpt=1))
     calc.get_potential_energy()
