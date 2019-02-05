@@ -17,6 +17,10 @@ def get_band(mater):
     K = numpy.array([1 / 3, 1 / 3, 0])
     M = numpy.array([1 / 2, 0, 0])
     G = numpy.array([0.0, 0.0, 0.0])
+<<<<<<< HEAD
+=======
+    M = numpy.array([1 / 2, 0, 0])
+>>>>>>> dd4da4870227272bd74c7549f581c3fece8bffcf
     kpoints = numpy.array([G, M, K, G])
     gw = GWBands(calc=es_wfs(mater),
                  gw_file=g0w0_file(mater),
@@ -36,6 +40,7 @@ def plot_band(mater):
     [plt.axvline(x=x_, ls="--", color="grey") for x_ in X]
     plt.xticks(X, ["G", "M", "K", "G"])  #
     plt.show()
+    # plt.save("{}.png".format(mater))
 
 if __name__ == "__main__":
     import sys
