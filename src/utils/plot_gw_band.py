@@ -5,16 +5,19 @@ import os, os.path
 
 
 materials = ["MoS2", "MoSe2", "WS2", "WSe2"]
-data_path = "/cluster/scratch/ttian/QEH"
+data_path = os.path.join(os.path.dirname(__file__), "../../results")
+
 def es_wfs(mater):
-    return os.path.join(data_path, "{}/es.gpw".format(mater))
+    return os.path.join(data_path, "gw_bs/{}/es.gpw".format(mater))
+
 def g0w0_file(mater):
-    return os.path.join(data_path, "{}/g0w0_results.pckl".format(mater))
+    return os.path.join(data_path, "gw_bs/{}/g0w0_results.pckl".format(mater))
 
 def get_band(mater):
     K = numpy.array([1 / 3, 1 / 3, 0])
+    M = numpy.array([1 / 2, 0, 0])
     G = numpy.array([0.0, 0.0, 0.0])
-    kpoints = numpy.array([G, K, G])
+    kpoints = numpy.array([G, M, K, G])
     gw = GWBands(calc=es_wfs(mater),
                  gw_file=g0w0_file(mater),
                  kpoints=kpoints)
@@ -22,12 +25,16 @@ def get_band(mater):
     print(res.keys())
     xx = res["x_k"]
     ekn = res["e_kn"]
-    return xx, ekn
+    X = res["X"]
+    return xx, ekn, X
 
 def plot_band(mater):
-    xx, ekn = get_band(mater)
+    xx, ekn, X = get_band(mater)
     plt.figure()
-    plt.plot(xx, ekn)
+    plt.plot(xx, ekn, color="b")
+    # K-path labeling
+    [plt.axvline(x=x_, ls="--", color="grey") for x_ in X]
+    plt.xticks(X, ["G", "M", "K", "G"])  #
     plt.show()
 
 if __name__ == "__main__":
