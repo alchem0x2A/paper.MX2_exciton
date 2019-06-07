@@ -83,7 +83,7 @@ def main(n_max=15, renorm=False):
         # print(p3)
         if renorm:
             n = 1.54
-            l, = ax.plot(N1, (Ea - Ea[-1]) * 1000 / n ** 2, "s",
+            l, = ax.plot(N1, (Ea - Ea[-1]) * 1000 / n ** 4, "s",
                          label="Model " + mater,
                          color=colors[mater],
                          markersize=5)
@@ -100,7 +100,7 @@ def main(n_max=15, renorm=False):
         nn = numpy.linspace(1, 15)
         # ax.plot(nn, (fit_fun(nn, best_p4[0], E_inf, best_p4[1]) - E_inf) * 1000 , "--",
                 # color=l.get_c())
-        ax.set_ylim(0, 150)
+        ax.set_ylim(0, 80)
         # ax.set_ylabel()
         
         

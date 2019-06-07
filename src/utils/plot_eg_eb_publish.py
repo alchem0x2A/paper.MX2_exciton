@@ -46,10 +46,11 @@ def fit_fun(n, E_1, E_inf, N_0):
     
 
 def main(n_max=15):
-    fig = plt.figure(figsize=(2.8, 2.8))
+    fig = plt.figure(figsize=(2.8, 3.3))
     plt.style.use("science")
     
-    ax = fig.add_subplot(111)
+    ax1 = fig.add_subplot(211)
+    ax2 = fig.add_subplot(212)
     for i, mater in enumerate(materials):
         N1, Eb = get_exciton(mater)
         N2, Eg = get_gap(mater)
@@ -69,25 +70,28 @@ def main(n_max=15):
         print(mater, "Eg", p2)
         
         E_inf = fit_fun(100, *p2) - fit_fun(100, *p1)
-        l, = ax.plot(N1, Eb, "^", label="Eb " + mater, color=colors[mater],
+        l, = ax2.plot(N1, Eb, "^", label="Eb " + mater, color=colors[mater],
                      markersize=5)
-        l2, = ax.plot(N2, Eg, "o", label="Eg", color=colors[mater],
+        l2, = ax1.plot(N2, Eg, "o", label="Eg", color=colors[mater],
                       markersize=5)
         # ax.plot(N_exp, (Ea_exp - p3[1]) * 1000, "s", label="Experiment")
+        
         nn = numpy.linspace(1, 15)
-        ax.plot(nn, fit_fun(nn, *p1),
+        ax2.plot(nn, fit_fun(nn, *p1),
                 color=l.get_c())
-        ax.plot(nn, fit_fun(nn, *p2),
+        ax1.plot(nn, fit_fun(nn, *p2),
                 color=l2.get_c())
-    ax.legend()
+    ax1.legend()
         # ax.set_ylim(0, 200)
         # ax.set_ylabel()
         
         
-    
+    # ax.set_ylim(0.1, 1.0)
     # exp_n, exp_ea = get_exp(mater)
-    ax.set_xlabel("$N$")
-    ax.set_ylabel("Energy (eV)")
+    ax1.set_xlabel("$N$")
+    ax2.set_xlabel("$N$")
+    ax1.set_ylabel("Energy (eV)")
+    ax2.set_ylabel("Energy (eV)")
     # ax.legend(loc=0)
     fig.tight_layout()
     f_name = os.path.join(img_path, "all-eg-vs-eb.svg")
