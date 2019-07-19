@@ -45,13 +45,16 @@ def compare_n(ax):
 def compare_delta(ax):
     data = numpy.genfromtxt(os.path.join(exp_path, "fitting_comparison.csv"),
                             delimiter=",", skip_header=1)
-    delta = data[:, 1]
+    # delta = data[:, 1]
+    delta = [66.86, 49.18, 65.5, 55.8]
     err = data[:, 2]
     delta_model = data[:, 3]
     wd = 0.5
-    ax.bar(numpy.array([1, 2, 3, 4]) - wd / 2, delta_model, width=wd,
+    # New in version 3.1.0
+    # axis position centered
+    ax.bar(numpy.array([1, 2, 3, 4]), delta_model, width=wd,
            alpha=0.5, label="Model")
-    ax.bar(numpy.array([1, 2, 3, 4]) - wd / 2, delta, yerr=err,
+    ax.bar(numpy.array([1, 2, 3, 4]), delta, yerr=err,
            width=wd,
            label="Exp", alpha=0.5)
     ax.set_xticks([1, 2, 3, 4])
